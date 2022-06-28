@@ -8,7 +8,10 @@ import (
 	"time"
 )
 
-const maxFileSize = 200 * 1024 * 1024
+const (
+	maxFileSize = 200 * 1024 * 1024
+	format      = "20060102_150405_000"
+)
 
 func init() {
 	log.SetPrefix("[RM] ")
@@ -31,7 +34,7 @@ func main() {
 			log.Fatalf(fmt.Sprintf("%s not exist", path))
 		}
 
-		target := filepath.Join(recycleBin, fmt.Sprintf("%s@%s", info.Name(), time.Now().Format("20060102_150405.000")))
+		target := filepath.Join(recycleBin, fmt.Sprintf("%s@%s", time.Now().Format(format), info.Name()))
 		if info.IsDir() || info.Size() < maxFileSize { // 文件夹、小文件回收到垃圾桶
 			if err := os.Rename(path, target); err != nil {
 				log.Fatalf("%v", err)
